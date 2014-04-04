@@ -80,10 +80,10 @@ func main() {
 	password := Prompt()
 	hashedPassword := HashPassword(password, 5000)
 	fmt.Println()
-    fmt.Println("-------------------------------------")
-    fmt.Println("-- Your password hash is:")
-    fmt.Println(hashedPassword)
-    fmt.Println("-------------------------------------")
+	fmt.Println("-------------------------------------")
+	fmt.Println("-- Your password hash is:")
+	fmt.Println(hashedPassword)
+	fmt.Println("-------------------------------------")
 
 	who := "World!"
 	if len(os.Args) > 1 {
