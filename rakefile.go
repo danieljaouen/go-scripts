@@ -1,13 +1,12 @@
 package main
 
 import (
-	"path/filepath"
 	"fmt"
 	"os"
 	"os/user"
+	"path/filepath"
 	"strings"
 )
-
 
 func FileListing(endPattern string) []map[string]string {
 	var paths []map[string]string
@@ -16,21 +15,21 @@ func FileListing(endPattern string) []map[string]string {
 		".",
 		func(path string, info os.FileInfo, err error) error {
 			if strings.HasSuffix(path, endPattern) {
-				dirname        := filepath.Dir(path)
-				linked, _      := os.Readlink(path)
-				linked          = strings.TrimSuffix(linked, ".placeholder")
+				dirname := filepath.Dir(path)
+				linked, _ := os.Readlink(path)
+				linked = strings.TrimSuffix(linked, ".placeholder")
 
-				oldBase        := filepath.Join(dirname, linked)
-				oldPath, _     := filepath.Abs(oldBase)
+				oldBase := filepath.Join(dirname, linked)
+				oldPath, _ := filepath.Abs(oldBase)
 
-				newBase        := strings.Replace(path, "locations/", "", 1)
-				newBase         = strings.TrimSuffix(newBase, endPattern)
+				newBase := strings.Replace(path, "locations/", "", 1)
+				newBase = strings.TrimSuffix(newBase, endPattern)
 
 				currentUser, _ := user.Current()
 				newPath, _ := filepath.Abs(
 					filepath.Join(
 						currentUser.HomeDir,
-						"." + newBase,
+						"."+newBase,
 					),
 				)
 
@@ -47,11 +46,9 @@ func FileListing(endPattern string) []map[string]string {
 	return paths
 }
 
-
 func DirectoryListing() []map[string]string {
 	return FileListing(".directory.symlink")
 }
-
 
 func LocalsListing() []map[string]string {
 	var files []map[string]string
@@ -65,7 +62,6 @@ func LocalsListing() []map[string]string {
 	return files
 }
 
-
 func DotfileListing() []map[string]string {
 	var files []map[string]string
 	allFiles := FileListing(".symlink")
@@ -78,7 +74,6 @@ func DotfileListing() []map[string]string {
 
 	return files
 }
-
 
 func main() {
 	files := FileListing(".symlink")
