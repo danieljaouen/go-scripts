@@ -48,6 +48,40 @@ func FileListing(endPattern string) []map[string]string {
 }
 
 
+func DirectoryListing() []map[string]string {
+	return FileListing(".directory.symlink")
+}
+
+
+func LocalsListing() []map[string]string {
+	var files []map[string]string
+	allFiles := FileListing(".symlink")
+	for i := range allFiles {
+		if strings.HasSuffix(allFiles[i]["new_path"], ".local") {
+			files = append(files, allFiles[i])
+		}
+	}
+
+	return files
+}
+
+
+func DotfileListing() []map[string]string {
+	var files []map[string]string
+	allFiles := FileListing(".symlink")
+	for i := range allFiles {
+		if (
+			!strings.HasSuffix(allFiles[i], ".directory") &&
+			!strings.HasSuffix(allFiles[i], ".local")
+		) {
+			append(files, allFiles[i])
+		}
+	}
+
+	return files
+}
+
+
 func main() {
 	files := FileListing(".symlink")
 	for i := range files {
