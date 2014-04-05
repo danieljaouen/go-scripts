@@ -19,6 +19,15 @@ func IsFile(path string) (bool, error) {
 	}
 }
 
+func IsSymlink(path string) (bool, error) {
+	stat, err := os.Readlink(path)
+	if err != nil {
+		return false, err
+	} else {
+		return true, nil
+	}
+}
+
 func IsDir(path string) (bool, error) {
 	stat, err := os.Stat(path)
 	if err != nil {
@@ -98,15 +107,23 @@ func DotfileListing() []map[string]string {
 }
 
 func CurrentFile(f map[string]string) map[string]string {
-	oldPath, newPath := f["old_path"], f["new_path"]
-	if d, err := IsDir(newPath); d {
+	_, newPath := f["old_path"], f["new_path"]
+	if d, _ := IsDir(newPath); d {
 		return map[string]string{
 			"type": "directory",
 			"path": newPath,
 			"old_path": newPath,
 			"new_path": newPath,
 		}
-	} else if d, err := IsFile(newPath); d {
+	} else if d, _ := IsSymlink(newPath); d {
+		linked, _ := os.Readlink(newPath)
+		return map[string]string{
+			"type": "symlink",
+			"path": newPath,
+			"old_path": linked,
+			"new_path": newPath,
+		}
+	} else {
 		return map[string]string{
 			"type": "file",
 			"path": newPath,
@@ -117,8 +134,8 @@ func CurrentFile(f map[string]string) map[string]string {
 }
 
 func main() {
-	IsFile("rakefile.go")
-	IsFile("kdljaflksd.go")
+	IsSymlink("kdljaflksd.go")
+	IsSymlink("locations/bash_profile.symlink")
 	files := FileListing(".symlink")
 	for i := range files {
 		fmt.Printf(files[i]["old_path"])
