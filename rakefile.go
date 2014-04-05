@@ -70,11 +70,9 @@ func DotfileListing() []map[string]string {
 	var files []map[string]string
 	allFiles := FileListing(".symlink")
 	for i := range allFiles {
-		if (
-			!strings.HasSuffix(allFiles[i], ".directory") &&
-			!strings.HasSuffix(allFiles[i], ".local")
-		) {
-			append(files, allFiles[i])
+		if !strings.HasSuffix(allFiles[i]["new_path"], ".directory") &&
+			!strings.HasSuffix(allFiles[i]["new_path"], ".local") {
+			files = append(files, allFiles[i])
 		}
 	}
 
