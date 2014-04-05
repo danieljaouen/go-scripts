@@ -8,6 +8,28 @@ import (
 	"strings"
 )
 
+func IsFile(path string) (bool, error) {
+	stat, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	} else if stat.IsDir() {
+		return false, nil
+	} else {
+		return true, nil
+	}
+}
+
+func IsDir(path string) (bool, error) {
+	stat, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	} else if stat.IsDir() {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}
+
 func FileListing(endPattern string) []map[string]string {
 	var paths []map[string]string
 
@@ -75,7 +97,28 @@ func DotfileListing() []map[string]string {
 	return files
 }
 
+func CurrentFile(f map[string]string) map[string]string {
+	oldPath, newPath := f["old_path"], f["new_path"]
+	if d, err := IsDir(newPath); d {
+		return map[string]string{
+			"type": "directory",
+			"path": newPath,
+			"old_path": newPath,
+			"new_path": newPath,
+		}
+	} else if d, err := IsFile(newPath); d {
+		return map[string]string{
+			"type": "file",
+			"path": newPath,
+			"old_path": newPath,
+			"new_path": newPath,
+		}
+	}
+}
+
 func main() {
+	IsFile("rakefile.go")
+	IsFile("kdljaflksd.go")
 	files := FileListing(".symlink")
 	for i := range files {
 		fmt.Printf(files[i]["old_path"])
