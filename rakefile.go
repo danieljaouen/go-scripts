@@ -133,6 +133,17 @@ func CurrentFile(f map[string]string) map[string]string {
 	}
 }
 
+func MaybeOverwriteSymlink(oldLink, newLink, noInput) {
+	if noInput {
+		fmt.Println(
+			"Warn!  | Overwrite | path: " +
+			newLink["new_path"] + ", " +
+			"old: " + oldLink["old_path"] + ", " +
+			"new: " + newLink["old_path"],
+		)
+	}
+}
+
 func main() {
 	IsSymlink("kdljaflksd.go")
 	IsSymlink("locations/bash_profile.symlink")
