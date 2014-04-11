@@ -2,10 +2,10 @@ package password
 
 import (
 	"bytes"
-	"encoding/base64"
-	"fmt"
 	"crypto/rand"
 	"crypto/sha512"
+	"encoding/base64"
+	"fmt"
 	"os"
 	"strings"
 
@@ -22,7 +22,6 @@ const (
 	SaltLenMin    = 1
 )
 
-
 func GenerateSalt(length, rounds int) string {
 	if length > SaltLenMax {
 		length = SaltLenMax
@@ -30,7 +29,7 @@ func GenerateSalt(length, rounds int) string {
 		length = SaltLenMin
 	}
 	rlen := (length * 6 / 8)
-	if (length * 6) % 8 != 0 {
+	if (length*6)%8 != 0 {
 		rlen += 1
 	}
 	if rounds < RoundsMin {
@@ -47,7 +46,6 @@ func GenerateSalt(length, rounds int) string {
 	}
 	return fmt.Sprintf("%srounds=%d$%s", MagicPrefix, rounds, salt)
 }
-
 
 func Prompt() string {
 	var password1 string
@@ -70,11 +68,9 @@ func Prompt() string {
 	return password1
 }
 
-
 func HashPassword(password string, rounds int) string {
 	hash := sha512.New()
 }
-
 
 func main() {
 	password := Prompt()
