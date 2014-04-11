@@ -110,23 +110,23 @@ func CurrentFile(f map[string]string) map[string]string {
 	_, newPath := f["old_path"], f["new_path"]
 	if d, _ := IsDir(newPath); d {
 		return map[string]string{
-			"type": "directory",
-			"path": newPath,
+			"type":     "directory",
+			"path":     newPath,
 			"old_path": newPath,
 			"new_path": newPath,
 		}
 	} else if d, _ := IsSymlink(newPath); d {
 		linked, _ := os.Readlink(newPath)
 		return map[string]string{
-			"type": "symlink",
-			"path": newPath,
+			"type":     "symlink",
+			"path":     newPath,
 			"old_path": linked,
 			"new_path": newPath,
 		}
 	} else {
 		return map[string]string{
-			"type": "file",
-			"path": newPath,
+			"type":     "file",
+			"path":     newPath,
 			"old_path": newPath,
 			"new_path": newPath,
 		}
@@ -137,9 +137,9 @@ func MaybeOverwriteSymlink(oldLink, newLink, noInput) {
 	if noInput {
 		fmt.Println(
 			"Warn!  | Overwrite | path: " +
-			newLink["new_path"] + ", " +
-			"old: " + oldLink["old_path"] + ", " +
-			"new: " + newLink["old_path"],
+				newLink["new_path"] + ", " +
+				"old: " + oldLink["old_path"] + ", " +
+				"new: " + newLink["old_path"],
 		)
 	}
 }
