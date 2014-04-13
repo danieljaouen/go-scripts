@@ -5,4 +5,5 @@ import (
 )
 
 func main() {
+	rakefile.IsFile("rakefile/rakefile.go")
 }
